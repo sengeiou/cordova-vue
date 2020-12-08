@@ -2,12 +2,12 @@
  * @Descripttion: 
  * @version: 
  * @Author: wyx
- * @Date: 2020-12-08 18:17:11
+ * @Date: 2020-12-08 19:47:39
  * @LastEditors: wyx
- * @LastEditTime: 2020-12-08 19:46:32
+ * @LastEditTime: 2020-12-08 19:48:48
 -->
 <template>
-  <div>history</div>
+  <div>set cityinfo</div>
 </template>
 <script>
 export default {

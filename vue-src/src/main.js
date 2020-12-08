@@ -1,10 +1,21 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: wyx
+ * @Date: 2020-12-08 10:18:25
+ * @LastEditors: wyx
+ * @LastEditTime: 2020-12-08 18:57:48
+ */
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import MuseUI from 'muse-ui';
+import 'muse-ui/dist/muse-ui.css';
 
 Vue.config.productionTip = false
+Vue.use(MuseUI);
 
 /* eslint-disable no-new */
 new Vue({
