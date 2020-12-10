@@ -4,7 +4,7 @@
  * @Author: wyx
  * @Date: 2020-12-08 10:18:25
  * @LastEditors: wyx
- * @LastEditTime: 2020-12-08 10:21:49
+ * @LastEditTime: 2020-12-09 19:05:08
  */
 'use strict'
 // Template version: 1.3.1
@@ -18,7 +18,23 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/apiWeather': {
+        target: 'http://wthrcdn.etouch.cn', //后端接口地址
+        changeOrigin: true,               //是否允许跨越
+        pathRewrite: {
+            '^/apiWeather': '/',              //重写,
+        }
+      },
+      '/apiPicture': {
+        target: 'https://www.bing.com', //后端接口地址
+        changeOrigin: true,               //是否允许跨越
+        pathRewrite: {
+            '^/apiPicture': '/',              //重写,
+        }
+      },
+      
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
