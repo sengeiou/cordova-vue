@@ -12,8 +12,8 @@
       <img :src="pic_url">
     </mu-card-media>
     <div class="searchBar">
-      <mu-form ref="form" :model="validateForm" inline style="margin:20px;">
-          <mu-text-field v-model="validateForm.cityname"></mu-text-field>
+      <mu-form ref="form" :model="validateForm" inline style="margin-top:20px;">
+          <mu-text-field v-model="validateForm.cityname" style="margin-left:20px;"></mu-text-field>
           <mu-button color="primary" @click="submit">查询</mu-button>
       </mu-form>
     </div>
@@ -56,7 +56,7 @@ export default {
   methods:{
     submit() {
       var url = 'http://wthrcdn.etouch.cn/weather_mini?city='+this.validateForm.cityname;
-      //var url = '/apiWeather/weather_mini?city='+this.validateForm.cityname;
+      // var url = '/apiWeather/weather_mini?city='+this.validateForm.cityname;
       this.$axios({
         method:'get',
         url:url,
@@ -93,7 +93,7 @@ export default {
       this.$axios({
         method: 'post',
         url:'http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=5&mkt=zh-CN',
-        //url:'/apiPicture/HPImageArchive.aspx?format=js&idx=0&n=5&mkt=zh-CN',
+        // url:'/apiPicture/HPImageArchive.aspx?format=js&idx=0&n=5&mkt=zh-CN',
       }).then((response) => {
         response = response.data;
         this.pic_url = 'http://www.bing.com'+response.images[4].url;

@@ -14,15 +14,29 @@ import router from './router'
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
 import axios from 'axios';
+import VueAMap from 'vue-amap'  
+
 
 Vue.config.productionTip = false
 Vue.use(MuseUI);
 Vue.prototype.$axios = axios    //全局注册，使用方法为:this.$axios
+Vue.use(VueAMap);
+VueAMap.initAMapApiLoader({
+  key: 'bfbd904d2952fbfb2ca7ba7ae102431a',
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  // 默认高德 sdk 版本为 1.4.4
+  // v: '1.4.4',
+  uiVersion: '1.1.1'// ui版本号 如果要用UI组件直接在此处添加使用的版本号就可以了，不用的话改为上句
+                    // 因为下面我要用的点坐标样式需要更改，因此用了UI组件
+});
 
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App },
-  template: '<App/>'
-})
+// document.addEventListener("deviceready",function(){
+  new Vue({
+    el: '#app',
+    router,
+    components: { App },
+    template: '<App/>'
+  })
+// },false);
+

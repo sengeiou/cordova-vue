@@ -9,7 +9,7 @@
 <template>
   <div>
     <router-view/>
-    <mu-container class="footer" style="max-width: 400px; width:100%;">
+    <mu-container class="footer">
       <mu-bottom-nav :value.sync="shift" shift color="rgba(0,0,0,0.1)">
         <mu-bottom-nav-item to="/map" value="nav_map" title="地图" icon="1"></mu-bottom-nav-item>
         <mu-bottom-nav-item to="/weather" value="nav_weather" title="天气" icon="2"></mu-bottom-nav-item>
@@ -41,7 +41,7 @@ export default {
     position: absolute;
     bottom: 0;
     width: 100%;
-    clear:both;
+    // clear:both;
     padding:0;
   }
 </style>
