@@ -20,9 +20,8 @@ export default {
     return {
         //地图相关
         zoom: 12,
-        iconTheme: 'default',
-        iconSOS: 'blue',
-        center: [116.39, 39.9],
+        center: [120.014027,30.292638],//==========================目前无法调用cordova定位接口
+        // center: [],
         currentPosition:[],
     }
   },
@@ -35,17 +34,36 @@ export default {
   methods: {
     initMap() {
       // 先获取坐标点
-      var onSuccess = (position) =>{
-          this.center[1] = position.coords.latitude;
-          this.center[0] = position.coords.longitude;
+      // var onSuccess = (position) =>{
+      //     this.center[1] = position.coords.latitude;
+      //     this.center[0] = position.coords.longitude;
 
           // 获取成功后，加载地图
           //map
           const map = new AMap.Map('container', {
             resizeEnable: true,
             zoom: this.zoom,
-            center: this.center,
+            // center: this.center,
           });
+          // AMap.plugin('AMap.Geolocation', function() {
+          //     var geolocation = new AMap.Geolocation({
+          //         enableHighAccuracy: true,//是否使用高精度定位，默认:true
+          //         timeout: 10000,          //超过10秒后停止定位，默认：5s
+          //         buttonPosition:'RB',    //定位按钮的停靠位置
+          //         buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+          //         zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+          //     });
+          //     map.addControl(geolocation);
+          //     geolocation.getCurrentPosition(function(status,result){
+          //         if(status=='complete'){
+          //           console.log(result.position)
+          //             // onComplete(result)
+          //         }else{
+          //             // onError(result)
+          //         }
+          //     });
+          // });
           function showCityInfo() {
             //实例化城市查询类
             var citysearch = new AMap.CitySearch();
@@ -61,7 +79,7 @@ export default {
 
                   var weather = new AMap.Weather();
                   //执行实时天气信息查询
-                  weather.getLive('杭州市', function(err, data) {
+                  weather.getLive('杭州市', function(err, data) {                   
                     document.getElementById('info').innerHTML = 
                         '当前城市：'+cityinfo
                         +'</br>实时：'+data.reportTime
@@ -69,7 +87,6 @@ export default {
                         +'&nbsp;&nbsp;气温：'+data.temperature+'℃'
                         +'</br>风向：'+data.windDirection
                         +'&#9;&#9;风力：'+data.windPower;
-                      // console.log(err, data);
                   });
                     
                 }
@@ -85,49 +102,26 @@ export default {
             position:this.center//位置
           })
           map.add(marker);//添加到地图
+          
           //缩放控件
           map.plugin(["AMap.ControlBar"],function(){
               var controlBar = new AMap.ControlBar({
                 position: {top:'100px',right:'10px'},
-                showZoomBar: true
+                showZoomBar: true,
+                showControlButton:false,
               })
               map.addControl(controlBar)
           });
 
-      };
-      //定位数据获取失败响应
-      function onError(error) {
-          alert('code: '    + error.code    + '\n' +
-                'message: ' + error.message + '\n');
-      }
-      //开始获取定位数据
-      navigator.geolocation.getCurrentPosition(onSuccess, onError);
+      // };
+      // //定位数据获取失败响应
+      // function onError(error) {
+      //     alert('code: '    + error.code    + '\n' +
+      //           'message: ' + error.message + '\n');
+      // }
+      // //开始获取定位数据
+      // navigator.geolocation.getCurrentPosition(onSuccess, onError);
     },
-    //获取用户所在城市信息
-    // showCityInfo() {
-    //   //实例化城市查询类
-    //   var citysearch = new AMap.CitySearch();
-    //   //自动获取用户IP，返回当前城市
-    //   citysearch.getLocalCity(function(status, result) {
-    //       if (status === 'complete' && result.info === 'OK') {
-    //           if (result && result.city && result.bounds) {
-    //               var cityinfo = result.city;
-    //               var citybounds = result.bounds;
-    //               document.getElementById('info').innerHTML = '您当前所在城市：'+cityinfo;
-    //               //地图显示当前城市
-    //               map.setBounds(citybounds);
-
-    //               var weather = new AMap.Weather();
-    //               //执行实时天气信息查询
-    //               weather.getLive('杭州市', function(err, data) {
-    //                   console.log(err, data);
-    //               });
-    //           }
-    //       } else {
-    //           document.getElementById('info').innerHTML = result.info;
-    //       }
-    //   });
-    // }
   }
 }
 </script>
