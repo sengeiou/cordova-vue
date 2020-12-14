@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@antv/f2": "^3.8.1",
     "axios": "^0.21.0",
     "muse-ui": "^3.0.2",
     "vue": "^2.5.2",

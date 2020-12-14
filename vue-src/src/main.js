@@ -23,7 +23,7 @@ Vue.prototype.$axios = axios    //全局注册，使用方法为:this.$axios
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
   key: 'bfbd904d2952fbfb2ca7ba7ae102431a',
-  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  plugin: ['AMap.Weather','AMap.CitySearch','AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ControlBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
   // 默认高德 sdk 版本为 1.4.4
   // v: '1.4.4',
   uiVersion: '1.1.1'// ui版本号 如果要用UI组件直接在此处添加使用的版本号就可以了，不用的话改为上句
