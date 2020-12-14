@@ -33,7 +33,6 @@ module.exports = {
             '^/apiPicture': '/',              //重写,
         }
       },
-      
     },
 
     // Various Dev Server settings

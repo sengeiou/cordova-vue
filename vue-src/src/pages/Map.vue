@@ -12,7 +12,6 @@
   </div>
 </template>
 <script>
-// import {getCurrentPosition,currentPosition} from '../../static/cordovaplugin.js'
 export default {
   data () {
     return {

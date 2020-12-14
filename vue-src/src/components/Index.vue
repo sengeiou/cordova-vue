@@ -37,8 +37,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
   .footer {
-    // position: fixed;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     // clear:both;

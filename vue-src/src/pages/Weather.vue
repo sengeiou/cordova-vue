@@ -32,7 +32,7 @@
         <mu-list-item-title>{{four}}</mu-list-item-title>
       </mu-list-item>
     </mu-list>
-
+    <img :src="pic_decode" style="width:100%">
   </div>
 </template>
 <script>
@@ -47,11 +47,13 @@ export default {
       three:'',
       four:'',
       pic_url:'',
-      pic_cpr:''
+      pic_cpr:'',
+      pic_id:'',
     }
   },
   mounted() {
     this.getPicture();
+    this.getServer();
   },
   methods:{
     submit() {
@@ -99,6 +101,23 @@ export default {
         this.pic_url = 'http://www.bing.com'+response.images[4].url;
         this.pic_cpr = response.images[4].copyright;
         console.log(response)
+      }).catch((error) => {
+        console.log(error)
+      });
+    },
+    getServer() {   
+      this.$axios({
+        method:'get',
+        url:'http://www.travelstar.top:8888/api/user/json?username=ch&password=HappyNewYear',
+        // data: {
+        //   username: 'ch',
+        //   password: 'HappyNewYear'
+        // }
+      }).then((response) => {
+        response = response.data;
+        this.pic_id = response.pictureId;
+        this.pic_code = response.data; 
+        this.pic_decode = "data:image/gif;base64,"+this.pic_code;
       }).catch((error) => {
         console.log(error)
       });
