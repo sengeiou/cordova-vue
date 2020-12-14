@@ -7,17 +7,43 @@
  * @LastEditTime: 2020-12-08 19:46:32
 -->
 <template>
-  <div class="background">
-    <canvas id="container" width="400" height="260"></canvas>
+  <div>
+    <canvas class="background" id="container" width="400" height="260"></canvas>
+    <img :src="pic_decode" style="width:100%">
   </div>
 </template>
 <script>
 import F2 from '@antv/f2';
 export default {
+  data() {
+    return {
+      pic_id:'',
+      pic_code:'',
+      pic_decode:'',
+    }
+  },
   mounted(){
     this.initChart();
+    this.getServer();
   },
   methods:{
+    getServer() {   
+      this.$axios({
+        method:'get',
+        url:'http://www.travelstar.top:8888/api/user/json?username=ch&password=HappyNewYear',
+        // data: {
+        //   username: 'ch',
+        //   password: 'HappyNewYear'
+        // }
+      }).then((response) => {
+        response = response.data;
+        this.pic_id = response.pictureId;
+        this.pic_code = response.data; 
+        this.pic_decode = "data:image/gif;base64,"+this.pic_code;
+      }).catch((error) => {
+        console.log(error)
+      });
+    },
     initChart() {
       const data = [{
         time: '12-15',

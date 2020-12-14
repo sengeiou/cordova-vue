@@ -11,10 +11,10 @@
     <router-view/>
     <mu-container class="footer">
       <mu-bottom-nav :value.sync="shift" shift color="rgba(0,0,0,0.1)">
-        <mu-bottom-nav-item to="/map" value="nav_map" title="地图" icon="1"></mu-bottom-nav-item>
-        <mu-bottom-nav-item to="/weather" value="nav_weather" title="天气" icon="2"></mu-bottom-nav-item>
-        <mu-bottom-nav-item to="/history" value="nav_history" title="历史" icon="3"></mu-bottom-nav-item>
-        <mu-bottom-nav-item to="/setting" value="nav_setting" title="设置" icon="4"></mu-bottom-nav-item>
+        <mu-bottom-nav-item to="/map" value="nav_map" title="地图" icon="beenhere"></mu-bottom-nav-item>
+        <mu-bottom-nav-item to="/weather" value="nav_weather" title="天气" icon="cloud"></mu-bottom-nav-item>
+        <mu-bottom-nav-item to="/history" value="nav_history" title="历史" icon="restore"></mu-bottom-nav-item>
+        <mu-bottom-nav-item to="/setting" value="nav_setting" title="设置" icon="settings"></mu-bottom-nav-item>
       </mu-bottom-nav>
     </mu-container>
   </div>

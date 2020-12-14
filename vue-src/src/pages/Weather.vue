@@ -8,7 +8,7 @@
 -->
 <template>
   <div>
-    <mu-card-media title="每日一图" :sub-title="pic_cpr">
+    <mu-card-media class="everypic" title="每日一图" :sub-title="pic_cpr">
       <img :src="pic_url">
     </mu-card-media>
     <div class="searchBar">
@@ -17,22 +17,19 @@
           <mu-button color="primary" @click="submit">查询</mu-button>
       </mu-form>
     </div>
-
-    <mu-list>
-      <mu-list-item button :ripple="false">
-        <mu-list-item-title>{{one}}</mu-list-item-title>
-      </mu-list-item>
-      <mu-list-item button :ripple="false">
-        <mu-list-item-title>{{two}}</mu-list-item-title>
-      </mu-list-item>
-      <mu-list-item button :ripple="false">
-        <mu-list-item-title>{{three}}</mu-list-item-title>
-      </mu-list-item>
-      <mu-list-item button :ripple="false">
-        <mu-list-item-title>{{four}}</mu-list-item-title>
-      </mu-list-item>
-    </mu-list>
-    <img :src="pic_decode" style="width:100%">
+    <mu-container>
+      <mu-paper :z-depth="1">
+        <mu-data-table :columns="columns" :data="list">
+          <template slot-scope="scope">
+            <td>{{scope.row.date}}</td>
+            <td>{{scope.row.high}}</td>
+            <td>{{scope.row.low}}</td>
+            <td>{{scope.row.type}}</td>
+          </template>
+        </mu-data-table>
+      </mu-paper>
+    </mu-container>
+    
   </div>
 </template>
 <script>
@@ -48,12 +45,21 @@ export default {
       four:'',
       pic_url:'',
       pic_cpr:'',
-      pic_id:'',
+      sort: {
+        name: '',
+        order: 'asc'
+      },
+      columns: [
+          { title: '日期', width: 120, name: 'date',align: 'center'},
+          { title: '最高温(℃)', name: 'high', width: 120, align: 'center'},
+          { title: '最低温(℃)', name: 'low', width: 120, align: 'center'},
+          { title: '天气', name: 'type', width: 120, align: 'center'},
+      ],
+      list: []
     }
   },
   mounted() {
     this.getPicture();
-    this.getServer();
   },
   methods:{
     submit() {
@@ -64,29 +70,8 @@ export default {
         url:url,
       }).then((response) => {
         response = response.data;
-        console.log(response)
-        this.one = response.data.forecast[0].date +" "
-                    + response.data.forecast[0].type +" "
-                    + response.data.forecast[0].high +" "
-                    + response.data.forecast[0].low +" "
-                    + response.data.forecast[0].fengxiang;
-        this.two = response.data.forecast[1].date +" "
-                    + response.data.forecast[1].type +" "
-                    + response.data.forecast[1].high +" "
-                    + response.data.forecast[1].low +" "
-                    + response.data.forecast[1].fengxiang;
-        this.three = response.data.forecast[2].date +" "
-                    + response.data.forecast[2].type +" "
-                    + response.data.forecast[2].high +" "
-                    + response.data.forecast[2].low +" "
-                    + response.data.forecast[2].fengxiang;
-        this.four = response.data.forecast[3].date +" "
-                    + response.data.forecast[3].type +" "
-                    + response.data.forecast[3].high +" "
-                    + response.data.forecast[3].low +" "
-                    + response.data.forecast[3].fengxiang
-
-        console.log(response)
+        this.list = response.data.forecast;
+        console.log(this.list)
       }).catch((error) => {
         console.log(error)
       });
@@ -105,26 +90,13 @@ export default {
         console.log(error)
       });
     },
-    getServer() {   
-      this.$axios({
-        method:'get',
-        url:'http://www.travelstar.top:8888/api/user/json?username=ch&password=HappyNewYear',
-        // data: {
-        //   username: 'ch',
-        //   password: 'HappyNewYear'
-        // }
-      }).then((response) => {
-        response = response.data;
-        this.pic_id = response.pictureId;
-        this.pic_code = response.data; 
-        this.pic_decode = "data:image/gif;base64,"+this.pic_code;
-      }).catch((error) => {
-        console.log(error)
-      });
-    }
+    
   },
 
 }
 </script>
 <style lang="less" scoped>
+.everypic {
+    margin: 10px;
+}
 </style>
