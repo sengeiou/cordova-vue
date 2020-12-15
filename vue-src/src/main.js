@@ -30,6 +30,39 @@ VueAMap.initAMapApiLoader({
                     // 因为下面我要用的点坐标样式需要更改，因此用了UI组件
 });
 
+
+
+Vue.component('remote-script', {
+  render: function (createElement) {
+      var self = this;
+      return createElement('script', {
+          attrs: {
+              type: 'text/javascript',
+              src: this.src
+          },
+          on: {
+              load: function (event) {
+                  self.$emit('load', event);
+              },
+              error: function (event) {
+                  self.$emit('error', event);
+              },
+              readystatechange: function (event) {
+                  if (this.readyState == 'complete') {
+                      self.$emit('load', event);
+                  }
+              }
+          }
+      });
+  },
+  props: {
+      src: {
+          type: String,
+          required: true
+      }
+  }
+});
+
 /* eslint-disable no-new */
 // document.addEventListener("deviceready",function(){
   new Vue({

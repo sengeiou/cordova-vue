@@ -8,7 +8,7 @@
 -->
 <template>
   <div>
-    <div id="container" style="height:700px"></div>
+    <div id="container"></div>
     <div class="info">
       <p id='info'></p>
     </div>
@@ -106,7 +106,7 @@ export default {
           //缩放控件
           map.plugin(["AMap.ControlBar"],function(){
               var controlBar = new AMap.ControlBar({
-                position: {top:'100px',right:'10px'},
+                position: {top:'20vh',right:'5vw'},
                 showZoomBar: true,
                 showControlButton:false,
               })
@@ -127,13 +127,19 @@ export default {
 </script>
 <style lang="less" scoped>
 #container {
-  width:100%; 
-  height: 180px; 
+  height:100vh;
+  width: 100vw;
 } 
 .info {
   position: fixed;
   width:20rem;
   top: 50px;
   z-index: 99;
+}
+/deep/.amap-logo {
+  z-index: -1;
+}
+/deep/.amap-copyright {
+  z-index: -1;
 }
 </style>

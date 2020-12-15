@@ -7,8 +7,9 @@
  * @LastEditTime: 2020-12-08 19:46:32
 -->
 <template>
-  <div>
-    <canvas class="background" id="container" width="400" height="260"></canvas>
+  <div class="app">
+    <canvas class="background" id="container" style="width:100%"></canvas>
+    <div>pictureID:{{pic_id}}</div>
     <img :src="pic_decode" style="width:100%">
   </div>
 </template>
@@ -173,8 +174,10 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+#app {
+    width: 100vw;
+}
 .background {
   background-color: rgb(158, 208, 255);
-
 }
 </style>

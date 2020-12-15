@@ -10,8 +10,8 @@
   <div>
     <router-view/>
     <mu-container class="footer">
-      <mu-bottom-nav :value.sync="shift" shift color="rgba(0,0,0,0.1)">
-        <mu-bottom-nav-item to="/map" value="nav_map" title="地图" icon="beenhere"></mu-bottom-nav-item>
+      <mu-bottom-nav :value.sync="shift" shift class="footer-nav" color="#004d40e3">
+        <mu-bottom-nav-item to="/map" value="nav_map" title="地图" icon="beenhere" ></mu-bottom-nav-item>
         <mu-bottom-nav-item to="/weather" value="nav_weather" title="天气" icon="cloud"></mu-bottom-nav-item>
         <mu-bottom-nav-item to="/history" value="nav_history" title="历史" icon="restore"></mu-bottom-nav-item>
         <mu-bottom-nav-item to="/setting" value="nav_setting" title="设置" icon="settings"></mu-bottom-nav-item>
@@ -42,5 +42,10 @@ export default {
     width: 100%;
     // clear:both;
     padding:0;
+    box-shadow: 0px -3px 5px #00000042;
+
+    .footer-nav {
+      color:#ffffffa4;
+    }
   }
 </style>

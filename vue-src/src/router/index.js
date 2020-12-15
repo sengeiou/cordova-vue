@@ -8,6 +8,9 @@
  */
 import Vue from 'vue'
 import Router from 'vue-router'
+
+//登录
+import Login from '@/pages/Login'
 //根
 import Index from '@/components/Index'
 //四模块
@@ -18,11 +21,21 @@ import SETTING from '@/pages/Setting'
 //setting模块内
 import UserInfo from '@/pages/setUserInfo'
 import CityInfo from '@/pages/setCity'
+import WeatherPlugin from '@/components/WeatherPlugin'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/',
+      redirect:'/login'
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login,
+    },
     {
       path: '/',
       name: 'Index',
@@ -37,7 +50,14 @@ export default new Router({
         {
           path: '/weather',
           name: 'WEATHER',
-          component: WEATHER
+          component: WEATHER,
+          children:[
+            {
+              path: '/plugin',
+              name: 'WeatherPlugin',
+              component:WeatherPlugin
+            },
+          ]
         },
         {
           path: '/history',
