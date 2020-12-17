@@ -18,8 +18,11 @@ import VueAMap from 'vue-amap'
 
 
 Vue.config.productionTip = false
+//UI
 Vue.use(MuseUI);
-Vue.prototype.$axios = axios    //全局注册，使用方法为:this.$axios
+//全局注册，使用方法为:this.$axios
+Vue.prototype.$axios = axios
+//高德地图
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
   key: 'bfbd904d2952fbfb2ca7ba7ae102431a',
@@ -30,8 +33,7 @@ VueAMap.initAMapApiLoader({
                     // 因为下面我要用的点坐标样式需要更改，因此用了UI组件
 });
 
-
-
+//引入js配置
 Vue.component('remote-script', {
   render: function (createElement) {
       var self = this;

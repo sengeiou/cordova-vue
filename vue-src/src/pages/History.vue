@@ -9,6 +9,7 @@
 <template>
   <div class="app">
     <canvas class="background" id="container" style="width:100%"></canvas>
+    {{res}}
     <div>pictureID:{{pic_id}}</div>
     <img :src="pic_decode" style="width:100%">
   </div>
@@ -21,6 +22,7 @@ export default {
       pic_id:'',
       pic_code:'',
       pic_decode:'',
+      res:'',
     }
   },
   mounted(){
@@ -31,16 +33,14 @@ export default {
     getServer() {   
       this.$axios({
         method:'get',
-        url:'http://www.travelstar.top:8888/api/user/json?username=ch&password=HappyNewYear',
+        url:'https://restapi.amap.com/v3/geocode/geo?output=JSON&key=af31dcfd8e52be6c756ef9f8d5e4a566&address=浙江省杭州市余杭区&city=杭州市',
         // data: {
         //   username: 'ch',
         //   password: 'HappyNewYear'
         // }
       }).then((response) => {
-        response = response.data;
-        this.pic_id = response.pictureId;
-        this.pic_code = response.data; 
-        this.pic_decode = "data:image/gif;base64,"+this.pic_code;
+        // response = response.data;
+        console.log(response)
       }).catch((error) => {
         console.log(error)
       });

@@ -22,7 +22,7 @@
       <!-- <router-view></router-view> -->
     </div>
     <div class="demo-text" v-if="active === 1">
-      <mu-carousel hide-indicators="true">
+      <mu-carousel hide-indicators>
         <mu-carousel-item>
           <mu-card-media class="everypic" title="每日一图" :sub-title="pic_cpr1">
             <img :src="pic_url1">
@@ -44,6 +44,9 @@
           </mu-card-media>
         </mu-carousel-item>
       </mu-carousel>
+      
+      <div id="qrcode" ref="qrcode"></div>
+      <button @click="qrcode"></button>
 
       <div style="background-color:#e0f2f1;height:800px;width:100%;">
 
@@ -70,7 +73,9 @@
     
   </div>
 </template>
+
 <script>
+import QRCode from 'qrcodejs2' 
 export default {
   data(){
     return{
@@ -78,10 +83,7 @@ export default {
       validateForm:{
         cityname:'',
       },
-      one:'',
-      two:'',
-      three:'',
-      four:'',
+      link: 'http://www.hznu.edu.cn',
       pic_url1:'',
       pic_cpr1:'',
       pic_url2:'',
@@ -105,11 +107,20 @@ export default {
   },
   mounted() {
     this.getPicture();
+    this.test();
+    // setTimeout(this.qrcode,1000);
+    // this.$nextTick(() => {
+		// 	this.qrcode()
+    // })
+    // this.$nextTick (function () {
+    //    this.qrcode();
+    // })
+    // this.qrcode();
   },
   methods:{
     submit() {
-      var url = 'http://wthrcdn.etouch.cn/weather_mini?city='+this.validateForm.cityname;
-      // var url = '/apiWeather/weather_mini?city='+this.validateForm.cityname;
+      // var url = 'http://wthrcdn.etouch.cn/weather_mini?city='+this.validateForm.cityname;
+      var url = '/apiWeather/weather_mini?city='+this.validateForm.cityname;
       this.$axios({
         method:'get',
         url:url,
@@ -141,7 +152,20 @@ export default {
         console.log(error)
       });
     },
-    
+    //  生成二维码
+    qrcode () {
+      // document.getElementById('qrcode').innerHTML = ""; //清除上次二维码的数据
+      let qrcode = new QRCode('qrcode', {
+        width: 200, // 设置宽度，单位像素
+        height: 200, // 设置高度，单位像素
+        text:this.link,   // 设置二维码内容或跳转地址
+      }) 
+    },
+    test() {
+      this.$nextTick (function () {
+        this.qrcode();
+      })
+    }
   },
 
 }

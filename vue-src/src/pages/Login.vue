@@ -4,13 +4,27 @@
     <!-- <remote-script src="../../static/canvas.js"></remote-script> -->
     
     <mu-card class="login_card" style="max-width: 375px; margin: 0 auto;">
-      <mu-form ref="form" :model="validateForm" class="mu-demo-form" label-position="left" >
+      <mu-form ref="form" :model="validateForm" class="mu-demo-form">
         <!-- <img src="../../static/logo2.png" style="margin-bottom:5vh"/> -->
-        <mu-form-item color="white" label="用户名" prop="username" :rules="usernameRules">
-          <mu-text-field underline-color='white' v-model="validateForm.username" prop="username"></mu-text-field>
+        <mu-form-item color="white" prop="username" :rules="usernameRules">
+          <mu-text-field underline-color='white' 
+                        v-model="validateForm.username" 
+                        prop="username"  
+                        placeholder="请输入用户名"
+          >
+          </mu-text-field>
         </mu-form-item>
-        <mu-form-item label="密  码" prop="password" :rules="passwordRules">
-            <mu-text-field underline-color='white' type="password" v-model="validateForm.password" prop="password"></mu-text-field>
+        <mu-form-item prop="password" :rules="passwordRules">
+            <!-- <mu-text-field underline-color='white' type="password" v-model="validateForm.password" prop="password"></mu-text-field> -->
+          <mu-text-field underline-color='white' 
+                        v-model="validateForm.password"
+                        placeholder="请输入密码"
+                        prop="password"
+                        :action-icon="visibility ? 'visibility_off' : 'visibility'" 
+                        :action-click="() => (visibility = !visibility)" 
+                        :type="visibility ? 'text' : 'password'"
+          >
+          </mu-text-field><br/>
         </mu-form-item>
         <span @click="forget" style="font-size:8px;position:absolute;right:10vw;">忘记密码？</span>
         <mu-form-item style="margin-top:26px">
@@ -24,7 +38,6 @@
 </template>
 
 <script>
-import {test2} from '../../static/canvas.js'
 export default {
   data () {
     return {
@@ -40,6 +53,7 @@ export default {
         username: '',
         password: '',
       },
+      visibility: false,
     }
   },
   mounted() {
@@ -277,10 +291,17 @@ export default {
 
       .mu-form-item {
         margin: 0;
+        .mu-text-field-input {
+          border:none;
+          background: none;
+        }
+        .mu-input-action-icon {
+          color:#009688;
+        }
       }
-      .mu-form-item-label {
-        font-size: 16px;
-      }
+      // .mu-form-item-label {
+      //   font-size: 16px;
+      // }
     }
   }
 }

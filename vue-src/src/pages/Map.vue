@@ -14,7 +14,9 @@
     </div>
   </div>
 </template>
+
 <script>
+import global_ from '../components/global';
 export default {
   data () {
     return {
@@ -22,7 +24,9 @@ export default {
         zoom: 12,
         center: [120.014027,30.292638],//==========================目前无法调用cordova定位接口
         // center: [],
-        currentPosition:[],
+        currentPosition: [],
+        cityName: '',      //将全局变量赋值到data里面
+        targetPoint: '',
     }
   },
   mounted() {
@@ -32,86 +36,84 @@ export default {
     setTimeout(this.initMap,500);
   },
   methods: {
-    initMap() {
+    initMap(){
       // 先获取坐标点
       // var onSuccess = (position) =>{
       //     this.center[1] = position.coords.latitude;
       //     this.center[0] = position.coords.longitude;
 
-          // 获取成功后，加载地图
-          //map
-          const map = new AMap.Map('container', {
-            resizeEnable: true,
-            zoom: this.zoom,
-            // center: this.center,
-          });
-          // AMap.plugin('AMap.Geolocation', function() {
-          //     var geolocation = new AMap.Geolocation({
-          //         enableHighAccuracy: true,//是否使用高精度定位，默认:true
-          //         timeout: 10000,          //超过10秒后停止定位，默认：5s
-          //         buttonPosition:'RB',    //定位按钮的停靠位置
-          //         buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-          //         zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+      // this.cityName = global_.g_cityName;
+      // global_.setCityName('hhhhhh')
+      // this.targetPoint = global_.g_cityName;
+      // console.log(1111,this.targetPoint,this.cityName)
 
-          //     });
-          //     map.addControl(geolocation);
-          //     geolocation.getCurrentPosition(function(status,result){
-          //         if(status=='complete'){
-          //           console.log(result.position)
-          //             // onComplete(result)
-          //         }else{
-          //             // onError(result)
-          //         }
-          //     });
-          // });
-          function showCityInfo() {
-            //实例化城市查询类
-            var citysearch = new AMap.CitySearch();
-            //自动获取用户IP，返回当前城市
-            citysearch.getLocalCity(function(status, result) {
-              if (status === 'complete' && result.info === 'OK') {
-                if (result && result.city && result.bounds) {
-                  var cityinfo = result.city;
-                  var citybounds = result.bounds;
-                  
-                  //地图显示当前城市
-                  map.setBounds(citybounds);
+      // 获取成功后，加载地图
+      const map = new AMap.Map('container', {
+        resizeEnable: true,
+        zoom: this.zoom,
+        // center: this.center,
+      });
 
-                  var weather = new AMap.Weather();
-                  //执行实时天气信息查询
-                  weather.getLive('杭州市', function(err, data) {                   
-                    document.getElementById('info').innerHTML = 
-                        '当前城市：'+cityinfo
-                        +'</br>实时：'+data.reportTime
-                        +'</br>天气：'+data.weather
-                        +'&nbsp;&nbsp;气温：'+data.temperature+'℃'
-                        +'</br>风向：'+data.windDirection
-                        +'&#9;&#9;风力：'+data.windPower;
-                  });
-                    
-                }
-              } else {
-                  document.getElementById('info').innerHTML = result.info;
-              }
-            });
-          }
-          showCityInfo();
+      // function showCityInfo() {
+        //实例化城市查询类
+        var citysearch = new AMap.CitySearch();
+        //自动获取用户IP，返回当前城市
+        citysearch.getLocalCity(function(status, result) {
+          if (status === 'complete' && result.info === 'OK') {
 
-          //标注点
-          var marker = new AMap.Marker({
-            position:this.center//位置
-          })
-          map.add(marker);//添加到地图
-          
-          //缩放控件
-          map.plugin(["AMap.ControlBar"],function(){
-              var controlBar = new AMap.ControlBar({
-                position: {top:'20vh',right:'5vw'},
-                showZoomBar: true,
-                showControlButton:false,
+            //定位城市中心点，写入全局变量
+            var la = (result.bounds.oc.lng-result.bounds.xc.lng)/2+result.bounds.xc.lng;
+            var lo = (result.bounds.oc.lat-result.bounds.xc.lat)/2+result.bounds.xc.lat;
+            var tmp=[];
+            tmp[0] = la;
+            tmp[1] = lo;
+            global_.setTargetPoint(tmp)
+            console.log(global_.g_targetPoint)
+            
+            if (result && result.city && result.bounds) {
+              var cityinfo = result.city;
+              var citybounds = result.bounds;
+              
+              //地图显示当前城市
+              map.setBounds(citybounds);
+
+              var weather = new AMap.Weather();
+              //执行实时天气信息查询
+              weather.getLive('杭州市', function(err, data) {                   
+                document.getElementById('info').innerHTML = 
+                    '当前城市：'+cityinfo
+                    +'</br>实时：'+data.reportTime
+                    +'</br>天气：'+data.weather
+                    +'&nbsp;&nbsp;气温：'+data.temperature+'℃'
+                    +'</br>风向：'+data.windDirection
+                    +'&#9;&#9;风力：'+data.windPower;
+              }); 
+
+              //标注点
+              var marker = new AMap.Marker({
+                position:global_.g_targetPoint//位置
               })
-              map.addControl(controlBar)
-          });
+              map.add(marker);//添加到地图
+
+              //===============================================
+
+            }
+          } else {
+              document.getElementById('info').innerHTML = result.info;
+          }
+        });
+      // });
+      // showCityInfo();
+
+      //缩放控件
+      map.plugin(["AMap.ControlBar"],function(){
+          var controlBar = new AMap.ControlBar({
+            position: {top:'20vh',right:'5vw'},
+            showZoomBar: true,
+            showControlButton:false,
+          })
+          map.addControl(controlBar)
+      });
 
       // };
       // //定位数据获取失败响应
@@ -121,7 +123,7 @@ export default {
       // }
       // //开始获取定位数据
       // navigator.geolocation.getCurrentPosition(onSuccess, onError);
-    },
+    }
   }
 }
 </script>
