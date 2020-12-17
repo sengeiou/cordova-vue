@@ -107,7 +107,7 @@ export default {
   },
   mounted() {
     this.getPicture();
-    this.test();
+    // this.test();
     // setTimeout(this.qrcode,1000);
     // this.$nextTick(() => {
 		// 	this.qrcode()
