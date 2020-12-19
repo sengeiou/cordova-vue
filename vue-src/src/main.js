@@ -15,6 +15,7 @@ import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
 import axios from 'axios';
 import VueAMap from 'vue-amap'  
+import VueQriously from 'vue-qriously'
 
 
 Vue.config.productionTip = false
@@ -32,6 +33,8 @@ VueAMap.initAMapApiLoader({
   uiVersion: '1.1.1'// ui版本号 如果要用UI组件直接在此处添加使用的版本号就可以了，不用的话改为上句
                     // 因为下面我要用的点坐标样式需要更改，因此用了UI组件
 });
+//QRcode
+Vue.use(VueQriously)
 
 //引入js配置
 Vue.component('remote-script', {

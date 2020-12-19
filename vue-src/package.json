@@ -13,9 +13,9 @@
     "@antv/f2": "^3.8.1",
     "axios": "^0.21.0",
     "muse-ui": "^3.0.2",
-    "qrcodejs2": "0.0.2",
     "vue": "^2.5.2",
     "vue-amap": "^0.5.10",
+    "vue-qriously": "^1.1.1",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
