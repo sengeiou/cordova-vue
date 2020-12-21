@@ -27,24 +27,10 @@ export default {
   },
   mounted(){
     this.initChart();
-    this.getServer();
+    // this.getServer();
   },
   methods:{
-    getServer() {   
-      this.$axios({
-        method:'get',
-        url:'https://restapi.amap.com/v3/geocode/geo?output=JSON&key=af31dcfd8e52be6c756ef9f8d5e4a566&address=浙江省杭州市余杭区&city=杭州市',
-        // data: {
-        //   username: 'ch',
-        //   password: 'HappyNewYear'
-        // }
-      }).then((response) => {
-        // response = response.data;
-        console.log(response)
-      }).catch((error) => {
-        console.log(error)
-      });
-    },
+    
     initChart() {
       const data = [{
         time: '12-15',
