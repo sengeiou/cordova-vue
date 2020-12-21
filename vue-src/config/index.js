@@ -33,6 +33,13 @@ module.exports = {
             '^/apiPicture': '/',              //重写,
         }
       },
+      '/apiLogin': {
+        target: 'http://localhost:3000', //后端接口地址
+        changeOrigin: true,               //是否允许跨越
+        pathRewrite: {
+            '^/apiLogin': '/',              //重写,
+        }
+      },
     },
 
     // Various Dev Server settings

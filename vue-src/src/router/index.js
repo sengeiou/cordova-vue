@@ -11,6 +11,8 @@ import Router from 'vue-router'
 
 //登录
 import Login from '@/pages/Login'
+//忘记/修改密码
+import Forget from '@/pages/Forget'
 //根
 import Index from '@/components/Index'
 //四模块
@@ -35,6 +37,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login,
+    },
+    {
+      path: '/forget',
+      name: 'Forget',
+      component: Forget,
     },
     {
       path: '/',

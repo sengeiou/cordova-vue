@@ -9,9 +9,10 @@
 <template>
   <div>
     <!-- 用户信息头 -->
-    <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
-      <div style="background-color:#e0f2f1">
-        <mu-card-header title="Myron Avatar">
+    <mu-card>
+      <!-- <div style="background-color:#e0f2f1"> -->
+      <div>
+        <mu-card-header :title="username">
         <mu-avatar slot="avatar">
           <img src="../assets/logo.png">
         </mu-avatar>
@@ -23,9 +24,10 @@
     <!-- 用户设置 -->
     <mu-expansion-panel :zDepth=0 :expand="panel === 'panel1'" @change="toggle('panel1')">
       <div slot="header">用户信息</div>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.
-      <mu-button slot="action" flat>Cancel</mu-button>
-      <mu-button slot="action" flat color="primary">Save</mu-button>
+      <p>用户名：{{username}}</p>
+      <p>昵&nbsp;&nbsp;&nbsp;&nbsp;称：{{nickname}}</p>
+      <!-- <mu-button slot="action" flat>Cancel</mu-button> -->
+      <mu-button slot="action" flat color="#004d40" @click="modifyUserInfo">修改信息</mu-button>
     </mu-expansion-panel>
     <!-- 城市信息 -->
     <mu-expansion-panel class="column_panel" :zDepth=0 :expand="panel === 'panel2'" @change="toggle('panel2')">
@@ -46,13 +48,24 @@
         ggggg
     </mu-expansion-panel>
     <!-- 自动登录 -->
-    <mu-expansion-panel :zDepth=0 :expand="panel === 'panel4'" @change="toggle('panel4')">
+    <mu-expansion-panel class="loginsetting" :zDepth=0 :expand="panel === 'panel4'" @change="toggle('panel4')">
       <div slot="header">登录设置</div>
       在下次打开App时免去登录操作
-      <mu-list-item-action button @click="events = !events">
+      <mu-list-item-action button @click="autoLogin">
         <mu-switch v-model="events" readonly></mu-switch>
       </mu-list-item-action>
     </mu-expansion-panel>
+
+    <!-- 忘记密码 -->
+    <mu-dialog title="修改密码" width="600" max-width="80%" :esc-press-close="false" :overlay-close="false" :open.sync="openAlert">
+      <mu-text-field underline-color='#009688' 
+        v-model="fo_password"
+          placeholder="请输入您的新密码"
+          prop="fo_password"
+      ></mu-text-field>
+      <mu-button slot="actions" flat color="#009688" @click="closeAlertDialog">取消</mu-button>
+      <mu-button slot="actions" flat color="#009688" @click="saveNewPassword">确定</mu-button>
+    </mu-dialog>
   </div>
 </template>
 <script>
@@ -98,6 +111,7 @@ export default {
     return{
       events: false,
       panel: '',
+      //city picker
       addressSlots: [
         {
           width: '30%',
@@ -113,11 +127,20 @@ export default {
       nowCity:global_.g_addressCity,
       address: ['北京','北京'],
       addressProvince: '北京',
-      addressCity: '北京'
+      addressCity: '北京',
+
+      // 用户信息
+      username:'',
+      nickname:'',
+      password:'',
+      openAlert: false,
+      fo_password:'',
     }
   },
   mounted(){
     this.getServer();
+    this.getUserInfo();
+    this.checkAutoButton();
   },
   methods:{
     toggle (panel) {
@@ -176,12 +199,73 @@ export default {
       }).catch((error) => {
         console.log(error)
       });
+    },
+    getUserInfo() {
+      this.$axios({
+        method:'get',
+        url:'http://47.114.46.42:3001/login',
+        // url: '/apiLogin/login',
+      }).then((response) => {
+        response = response.data[0];
+        // console.log('登录请求返回结果',response)
+        this.username = response.username;
+        this.nickname = response.nickname;
+        this.password = response.password;
+      }).catch((error) => {
+        console.log(error)
+      });
+    },
+    modifyUserInfo() {
+      this.openAlert = true;
+    },
+    closeAlertDialog () {
+      this.openAlert = false;
+    },
+    saveNewPassword(){
+      this.$axios.get('http://47.114.46.42:3001/modifypassword',{
+      // this.$axios.get('/apiLogin/modifypassword',{
+        params: {
+          username: this.username,
+          nickname: this.nickname,
+          password: this.fo_password,
+        },
+      }).then((response) => {
+        response = response.data[0];
+        console.log('密码修改返回结果',response)
+        this.openAlert = false;
+        //如果开启自动登录，则更新localstorage
+        if(this.events){
+          window.localStorage.setItem('username', this.username);
+          window.localStorage.setItem('password', this.password);
+        }
+      }).catch((error) => {
+        console.log(error)
+      });
+    },
+    checkAutoButton(){
+      if((window.localStorage.getItem('username')!=null)
+          && (window.localStorage.getItem('password'))!=null){
+            this.events=true;
+        }
+    },
+    autoLogin(){
+      this.events = !this.events;
+      if(this.events){
+        window.localStorage.setItem('username', this.username);
+        window.localStorage.setItem('password', this.password);
+      }else{
+        window.localStorage.removeItem('username');
+        window.localStorage.removeItem('password');
+      }
     }
   }
     
 }
 </script>
 <style lang="less" scoped>
+/deep/.mu-card {
+    background-color: rgb(224, 242, 241);
+}
 /deep/.mu-card-header {
     text-align: left;
     padding: 32px;
@@ -201,11 +285,22 @@ export default {
 /deep/.mu-slide-picker-item {
   font-size: 16px;
 }
+.loginsetting {
+  /deep/.mu-expansion-panel-container{
+    /deep/.mu-expansion-panel-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+}
 /deep/.mu-expansion-panel-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
+
 .cityselectInfo {
   font-size: 15px;
 }

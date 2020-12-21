@@ -33,6 +33,31 @@
         </mu-form-item>
       </mu-form>
     </mu-card>
+    <!-- 提示框 -->
+    <mu-snackbar :color="color.color" :open.sync="color.open">
+      <!-- <mu-icon left :value="icon"></mu-icon> -->
+      {{color.message}}
+      <mu-button flat slot="action" color="#fff" @click="color.open = false">关闭</mu-button>
+    </mu-snackbar>
+    <!-- 忘记密码 -->
+    <mu-dialog title="修改密码" width="600" max-width="80%" :esc-press-close="false" :overlay-close="false" :open.sync="openAlert">
+      <p>需要验证帐号以及昵称</p><br>
+      <mu-text-field underline-color='#009688' 
+        v-model="fo_username" 
+        placeholder="请输入用户名"
+      ></mu-text-field>
+      <mu-text-field underline-color='#009688' 
+        v-model="fo_nickname" 
+        placeholder="请输入昵称"
+      ></mu-text-field>
+      <mu-text-field underline-color='#009688' 
+        v-model="fo_password"
+          placeholder="请输入您的新密码"
+          prop="fo_password"
+      ></mu-text-field>
+      <mu-button slot="actions" flat color="#009688" @click="closeAlertDialog">取消</mu-button>
+      <mu-button slot="actions" flat color="#009688" @click="saveNewPassword">确定</mu-button>
+    </mu-dialog>
     
   </div>
 </template>
@@ -54,17 +79,47 @@ export default {
         password: '',
       },
       visibility: false,
+      color: {
+        color: 'error',
+        message: '帐号或密码错误，请重试！',
+        open: false,
+        timeout: 3000
+      },
+      openAlert: false,
+      fo_username:'',
+      fo_nickname:'',
+      fo_password:'',
     }
   },
   mounted() {
     this.test()
+    this.autoLogin();
   },
   methods: {
     submit () {
       this.$refs.form.validate().then((result) => {
-        console.log('form valid: ', result)
         if(result) {
-          this.$router.push('./map');
+          console.log('form valid: ', result)
+          this.$axios({
+            method:'get',
+            url:'http://47.114.46.42:3001/login',
+            // url: '/apiLogin/login',
+          }).then((response) => {
+            response = response.data[0];
+            // console.log('登录请求返回结果',response)
+            if((this.validateForm.username === response.username)
+              && (this.validateForm.password === response.password)){
+                this.$router.push('./map');
+            }else{
+              if (this.color.timer) clearTimeout(this.color.timer);
+              this.color.open = true;
+              this.color.timer = setTimeout(() => {
+                this.color.open = false;
+              }, this.color.timeout);
+            }
+          }).catch((error) => {
+            console.log(error)
+          });
         }
       });
     },
@@ -77,9 +132,47 @@ export default {
       };
     },
     forget() {
-      alert(11111)
+      this.openAlert = true;
+      // this.$router.push('./forget');
     },
-
+    closeAlertDialog () {
+      this.openAlert = false;
+    },
+    saveNewPassword(){
+      this.$axios.get('http://47.114.46.42:3001/modifypassword',{
+      // this.$axios.get('/apiLogin/modifypassword',{
+        params: {
+          username: this.fo_username,
+          nickname: this.fo_nickname,
+          password: this.fo_password,
+        },
+      })
+      .then((response) => {
+        response = response.data[0];
+        console.log('密码修改返回结果',response)
+        this.openAlert = false;
+      }).catch((error) => {
+        console.log(error)
+      });
+    },
+    autoLogin() {
+      this.$axios({
+        method:'get',
+        url:'http://47.114.46.42:3001/login',
+        // url: '/apiLogin/login',
+      }).then((response) => {
+        response = response.data[0];
+        // console.log('登录请求返回结果',response)
+        if((response.username === window.localStorage.getItem('username'))
+          && (response.password === window.localStorage.getItem('password'))){
+            console.log('localstorage',window.localStorage.getItem('username'))
+            this.$router.push('./map');
+        }
+      }).catch((error) => {
+        console.log(error)
+      });
+    },
+    //背景canvas
     test() {
       function CanvasAnimate(Dom,options){
           options = options || {}
