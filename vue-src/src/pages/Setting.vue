@@ -45,7 +45,7 @@
     <!-- 历史 -->
     <mu-expansion-panel :zDepth=0 :expand="panel === 'panel3'" @change="toggle('panel3')">
       <div slot="header">历史设置</div>
-        ggggg
+        当前历史可见天数：
     </mu-expansion-panel>
     <!-- 自动登录 -->
     <mu-expansion-panel class="loginsetting" :zDepth=0 :expand="panel === 'panel4'" @change="toggle('panel4')">

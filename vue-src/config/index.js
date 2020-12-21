@@ -19,8 +19,15 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/apiCity': {
+        target: 'https://geoapi.qweather.com/v2/city', //后端接口地址
+        changeOrigin: true,               //是否允许跨越
+        pathRewrite: {
+            '^/apiCity': '/',              //重写,
+        }
+      },
       '/apiWeather': {
-        target: 'http://wthrcdn.etouch.cn', //后端接口地址
+        target: 'https://devapi.qweather.com/v7/weather', //后端接口地址
         changeOrigin: true,               //是否允许跨越
         pathRewrite: {
             '^/apiWeather': '/',              //重写,

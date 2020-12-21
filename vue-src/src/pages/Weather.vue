@@ -13,13 +13,36 @@
         <mu-icon value="cloud" color="#004d40"></mu-icon></mu-tab>
       <mu-tab>
         <mu-icon value="favorite" color="#004d40"></mu-icon></mu-tab>
-      <mu-tab>
-        <mu-icon value="person_pin" color="#004d40"></mu-icon></mu-tab>
     </mu-tabs>
 
     <div class="demo-text" v-if="active === 0">
-      <p>天气页面</p>
-      <!-- <router-view></router-view> -->
+      <!-- https://source.unsplash.com/800x0/?encryption,girl -->
+      <div class="now_weather">
+        <div class="now_weather_header">
+          <div class="now_city">当前城市：{{now.city}}</div>
+          <div class="now_vis">能见度：{{now.vis}}Km</div>
+        </div>
+        <div class="now_weather_main">
+          <div class="now_temp">{{now.temp}}
+            <span class="now_temp_unit">℃</span>
+          </div>
+          <div class="now_text">{{now.text}}</div>
+        </div>
+        <div class="now_other">
+          <div class="now_other_wind">{{now.windScale}}级
+            <div class="now_other_wind_span">{{now.windDir}}</div>
+          </div>
+          <div class="now_other_humi">{{now.humidity}}%
+            <div class="now_other_humi_span">湿度</div>
+          </div>
+          <div class="now_other_feel">{{now.feelsLike}}℃
+            <div class="now_other_feel_span">体感温度</div>
+          </div>
+          <div class="now_other_pres">{{now.pressure}}Pa
+            <div class="now_other_pres_span">气压</div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="demo-text" v-if="active === 1">
       <!-- 每日一图轮播图 -->
@@ -53,40 +76,21 @@
           <p>更多资讯请访问官网</p>
         </div>
       </div>
-      
       <!-- <div style="background-color:#e0f2f1;height:800px;width:100%;"></div> -->
-    </div>
-    <div class="demo-text" v-if="active === 2">
-      <div class="searchBar">
-        <mu-form ref="form" :model="validateForm" inline >
-            <mu-text-field v-model="validateForm.cityname" style="margin-top:20px;margin-left:20px;"></mu-text-field>
-            <mu-button color="#004d40" @click="submit" style="margin-top:20px;">查询</mu-button>
-        </mu-form>
-      </div>
-      <mu-paper :z-depth="1" style="margin:8px">
-        <mu-data-table :columns="columns" :data="list">
-          <template slot-scope="scope">
-            <td>{{scope.row.date}}</td>
-            <td>{{scope.row.high}}</td>
-            <td>{{scope.row.low}}</td>
-            <td>{{scope.row.type}}</td>
-          </template>
-        </mu-data-table>
-      </mu-paper>
     </div>
     
   </div>
 </template>
 
 <script>
+import global_ from '../components/global';
 export default {
   data(){
     return{
       active: 0,
-      validateForm:{
-        cityname:'',
-      },
+      //二维码
       link: 'http://www.hznu.edu.cn',
+      //每日一图
       pic_url1:'',
       pic_cpr1:'',
       pic_url2:'',
@@ -95,37 +99,26 @@ export default {
       pic_cpr3:'',
       pic_url4:'',
       pic_cpr4:'',
-      sort: {
-        name: '',
-        order: 'asc'
-      },
-      columns: [
-          { title: '日期', width: 120, name: 'date',align: 'center'},
-          { title: '最高温(℃)', name: 'high', width: 120, align: 'center'},
-          { title: '最低温(℃)', name: 'low', width: 120, align: 'center'},
-          { title: '天气', name: 'type', width: 120, align: 'center'},
-      ],
-      list: []
+      //和风天气key
+      key:'66be2e4e10c346ba8989c490e6557e3e',
+      //当前城市
+      cityCode:'',
+      now: {},
+      //热门城市
+      cityCode1:'',
+      cityCode2:'',
+      cityCode3:'',
+      now1: {},
+      now2: {},
+      now3: {},
     }
   },
   mounted() {
+    this.getCityCode();
     this.getPicture();
+    this.getHotCity();
   },
   methods:{
-    submit() {
-      // var url = 'http://wthrcdn.etouch.cn/weather_mini?city='+this.validateForm.cityname;
-      var url = '/apiWeather/weather_mini?city='+this.validateForm.cityname;
-      this.$axios({
-        method:'get',
-        url:url,
-      }).then((response) => {
-        response = response.data;
-        this.list = response.data.forecast;
-        console.log(this.list)
-      }).catch((error) => {
-        console.log(error)
-      });
-    },
     getPicture() {
       this.$axios({
         method: 'post',
@@ -146,6 +139,117 @@ export default {
         console.log(error)
       });
     },
+    getCityCode() {
+      //当前城市
+      var url = 'https://geoapi.qweather.com/v2/city/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+global_.g_addressCity;
+      this.$axios({
+        methods:'get',
+        url: url,
+        // url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+global_.g_addressCity,
+      }).then((response) => {
+        response = response.data;
+        this.cityCode = response.location[0].id;
+        console.log('getCityCode',this.cityCode,response.location[0])
+        this.getWeather(this.cityCode);
+      }).catch((error) => {
+        console.log(error)
+      });
+    },
+    getWeather(cityCode) {
+      var url = 'https://devapi.qweather.com/v7/weather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+cityCode;
+      this.$axios({
+        methods:'get',
+        url: url,
+        // url: '/apiWeather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+cityCode,
+      }).then((response) => {
+        response = response.data.now;
+        this.now = response;
+        this.now.city=global_.g_addressCity;
+        console.log('getWeather',this.now)
+      }).catch((error) => {
+        console.log(error)
+      });
+    },
+    //获取热门城市天气
+    getHotCity(){
+      //热门城市1-北京
+      var url = 'https://geoapi.qweather.com/v2/city/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location=北京';
+      this.$axios({
+        methods:'get',
+        // url: url,
+        url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location=北京',
+      }).then((response) => {
+        response = response.data;
+        this.cityCode1 = response.location[0].id;
+        // 获取到id之后获取天气
+        this.$axios({
+          methods:'get',
+          // url: 'https://devapi.qweather.com/v7/weather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.cityCode1,
+          url: '/apiWeather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.cityCode1,
+        }).then((response) => {
+          response = response.data.now;
+          this.now1 = response;
+          this.now1.city='北京';
+          console.log('getWeather北京',this.now1)
+        }).catch((error) => {
+          console.log(error)
+        });
+      }).catch((error) => {
+        console.log(error)
+      });
+
+      //热门城市2-上海
+      var url = 'https://geoapi.qweather.com/v2/city/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location=上海'
+      this.$axios({
+        methods:'get',
+        // url: url,
+        url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location=上海',
+      }).then((response) => {
+        response = response.data;
+        this.cityCode2 = response.location[0].id;
+        // 获取到id之后获取天气
+        this.$axios({
+          methods:'get',
+          // url: 'https://devapi.qweather.com/v7/weather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.cityCode2,
+          url: '/apiWeather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.cityCode2,
+        }).then((response) => {
+          response = response.data.now;
+          this.now2 = response;
+          this.now2.city='上海';
+          console.log('getWeather上海',this.now2)
+        }).catch((error) => {
+          console.log(error)
+        });
+      }).catch((error) => {
+        console.log(error)
+      });
+      
+      //热门城市3-广东
+      var url = 'https://geoapi.qweather.com/v2/city/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location=广州';
+      this.$axios({
+        methods:'get',
+        // url: url,
+        url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location=广州',
+      }).then((response) => {
+        response = response.data;
+        this.cityCode3 = response.location[0].id;
+        // 获取到id之后获取天气
+        this.$axios({
+          methods:'get',
+          // url: 'https://devapi.qweather.com/v7/weather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.cityCode3,
+          url: '/apiWeather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.cityCode3,
+        }).then((response) => {
+          response = response.data.now;
+          this.now3 = response;
+          this.now3.city='广州';
+          console.log('getWeather广州',this.now3)
+        }).catch((error) => {
+          console.log(error)
+        });
+      }).catch((error) => {
+        console.log(error)
+      });
+    }
   },
 
 }
@@ -173,6 +277,57 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+}
+.now_weather {
+  padding: 3vh 0vw;
+  .now_weather_header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5vw;
+  }
+  .now_weather_main{
+    padding: 10vh 0vw;
+    .now_temp {
+      font-size: 60px;
+    }
+    .now_temp_unit{
+      // float: left;
+      position: absolute;
+      padding-top: 2vh;
+      font-size: 14px;
+    }
+    .now_text {
+      font-size: 18px;
+    }
+  }
+  .now_other {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 10vw;
+    font-size: 18px;
+    .now_other_wind {
+      .now_other_wind_span{
+        font-size: 12px;
+      }
+    }
+    .now_other_humi {
+      .now_other_humi_span{
+        font-size: 12px;
+      }
+    }
+    .now_other_feel {
+      .now_other_feel_span{
+        font-size: 12px;
+      }
+    }
+    .now_other_pres {
+      .now_other_pres_span{
+        font-size: 12px;
+      }
+    }
+    
   }
 }
 </style>
