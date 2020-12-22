@@ -60,7 +60,7 @@
         <mu-switch v-model="events" readonly></mu-switch>
       </mu-list-item-action>
     </mu-expansion-panel>
-    <mu-divider></mu-divider>
+    <!-- <mu-divider></mu-divider> -->
 
     <!-- 忘记密码 -->
     <mu-dialog title="修改密码" width="600" max-width="80%" :esc-press-close="false" :overlay-close="false" :open.sync="openAlert">
@@ -282,6 +282,12 @@ export default {
       }
     },
     changeHistory() {
+      if(this.visible_day>7) {
+        this.visible_day = 7
+      }
+      if(this.visible_day<2) {
+        this.visible_day=2
+      }
       global_.setVisibleDay(this.visible_day)
       this.visibleDay = global_.g_visibleDay;
     }

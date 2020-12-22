@@ -293,102 +293,106 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.background {
-  position: absolute;
-  left: 0;
-  opacity: 0.2;
+#app{
+  background-color: white;
+  .background {
+    position: absolute;
+    left: 0;
+    opacity: 0.2;
+  }
+
+  .demo-text {
+    // padding: 16px;
+    background: #fff;
+    p {
+      margin: 8px 0;
+    }
+  }
+  .mu-carousel {
+    height: 210px;
+  }
+  .qrcode {
+    display: flex;
+    justify-content: space-between;
+    padding: 12vw;
+    .qrcode_desc {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+  .now_weather {
+    background-color: transparent;
+    padding: 3vh 0vw;
+    .now_weather_header {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 5vw;
+    }
+    .now_weather_main{
+      padding: 11vh 0vw;
+      .now_temp {
+        font-size: 80px;
+      }
+      .now_temp_unit{
+        // float: left;
+        position: absolute;
+        padding-top: 2vh;
+        font-size: 14px;
+      }
+      .now_text {
+        font-size: 20px;
+      }
+    }
+    .now_other {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 10vw;
+      font-size: 18px;
+      .now_other_wind {
+        .now_other_wind_span{
+          font-size: 12px;
+        }
+      }
+      .now_other_humi {
+        .now_other_humi_span{
+          font-size: 12px;
+        }
+      }
+      .now_other_feel {
+        .now_other_feel_span{
+          font-size: 12px;
+        }
+      }
+      .now_other_pres {
+        .now_other_pres_span{
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  .hot_city {
+    margin-top:5vh;
+    .hot_city_title {
+      display: flex;
+      .hot_city_icon {
+          width: 43px;
+        }
+        .mu-item-title{
+          font-size: 18px;
+          padding-left: 5vw;
+          height: 43px;
+          line-height: 43px
+        }
+    }
+    .hot_city_temp{
+      position: absolute;
+      right: 10vw;
+      // margin-left: 50vw;
+      font-size: 18px;
+    }
+  }
 }
 
-.demo-text {
-  // padding: 16px;
-  background: #fff;
-  p {
-    margin: 8px 0;
-  }
-}
-.mu-carousel {
-  height: 210px;
-}
-.qrcode {
-  display: flex;
-  justify-content: space-between;
-  padding: 12vw;
-  .qrcode_desc {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-}
-.now_weather {
-  background-color: transparent;
-  padding: 3vh 0vw;
-  .now_weather_header {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 5vw;
-  }
-  .now_weather_main{
-    padding: 11vh 0vw;
-    .now_temp {
-      font-size: 80px;
-    }
-    .now_temp_unit{
-      // float: left;
-      position: absolute;
-      padding-top: 2vh;
-      font-size: 14px;
-    }
-    .now_text {
-      font-size: 20px;
-    }
-  }
-  .now_other {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0 10vw;
-    font-size: 18px;
-    .now_other_wind {
-      .now_other_wind_span{
-        font-size: 12px;
-      }
-    }
-    .now_other_humi {
-      .now_other_humi_span{
-        font-size: 12px;
-      }
-    }
-    .now_other_feel {
-      .now_other_feel_span{
-        font-size: 12px;
-      }
-    }
-    .now_other_pres {
-      .now_other_pres_span{
-        font-size: 12px;
-      }
-    }
-  }
-}
-.hot_city {
-  margin-top:5vh;
-  .hot_city_title {
-    display: flex;
-    .hot_city_icon {
-        width: 43px;
-      }
-      .mu-item-title{
-        font-size: 18px;
-        padding-left: 5vw;
-        height: 43px;
-        line-height: 43px
-      }
-  }
-  .hot_city_temp{
-    position: absolute;
-    right: 10vw;
-    // margin-left: 50vw;
-    font-size: 18px;
-  }
-}
 </style>

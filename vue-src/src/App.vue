@@ -39,6 +39,6 @@ export default {
   color: #2c3e50;
   width: 100vw;
   height:100vh;
-  background-color:white;
+  /* background-color:white; */
 }
 </style>
