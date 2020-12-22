@@ -15,7 +15,18 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  
+  mounted() {
+    window.addEventListener('offline', ()=>{
+     // 网络由正常常到异常时触发
+     sessionStorage.locationUrl=window.location.href;
+     this.$router.replace('/error')
+    });
+    window.addEventListener('online',()=>{
+      window.location.href=sessionStorage.locationUrl
+    });
+  },
 }
 </script>
 
@@ -28,6 +39,6 @@ export default {
   color: #2c3e50;
   width: 100vw;
   height:100vh;
-  /* background-color:#f5fffe; */
+  background-color:white;
 }
 </style>

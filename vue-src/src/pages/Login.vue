@@ -5,7 +5,7 @@
     
     <mu-card class="login_card" style="max-width: 375px; margin: 0 auto;">
       <mu-form ref="form" :model="validateForm" class="mu-demo-form">
-        <!-- <img src="../../static/logo2.png" style="margin-bottom:5vh"/> -->
+        <img src="../assets/weather.png" style="margin:2vh 0;height:15vh"/>
         <mu-form-item color="white" prop="username" :rules="usernameRules">
           <mu-text-field underline-color='white' 
                         v-model="validateForm.username" 
@@ -102,8 +102,8 @@ export default {
           console.log('form valid: ', result)
           this.$axios({
             method:'get',
-            url:'http://47.114.46.42:3001/login',
             // url: '/apiLogin/login',
+            url:'http://47.114.46.42:3001/login',
           }).then((response) => {
             response = response.data[0];
             // console.log('登录请求返回结果',response)
@@ -133,7 +133,6 @@ export default {
     },
     forget() {
       this.openAlert = true;
-      // this.$router.push('./forget');
     },
     closeAlertDialog () {
       this.openAlert = false;
@@ -158,8 +157,8 @@ export default {
     autoLogin() {
       this.$axios({
         method:'get',
-        url:'http://47.114.46.42:3001/login',
         // url: '/apiLogin/login',
+        url:'http://47.114.46.42:3001/login',
       }).then((response) => {
         response = response.data[0];
         // console.log('登录请求返回结果',response)
@@ -372,9 +371,9 @@ export default {
     position: fixed;
     top:25vh;
     left: 10vw;
-    padding: 20vh 10vw;
+    padding: 0 10vw;
     width: 80vw;
-    height: 45vh;
+    height: 350px;
     z-index: 100;
     background-color:rgba(255, 255, 255, 0.63);
 

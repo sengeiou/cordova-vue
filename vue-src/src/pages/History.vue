@@ -9,12 +9,21 @@
 <template>
   <div class="app">
     <div class="page_title">历史城市 - 未来{{visibleDay}}天天气</div>
-    <div class="card_title card_title1">{{city1}}</div>
-    <canvas class="background" id="container1" style="width:100%;background-color:#4db6ac"></canvas>
-    <div class="card_title card_title2">{{city2}}</div>
-    <canvas class="background" id="container2" style="width:100%;background-color:#009688"></canvas>
-    <div class="card_title card_title3">{{city3}}</div>
-    <canvas class="background" id="container3" style="width:100%;background-color:#00796b"></canvas>
+    <div class="card">
+      <div class="background_text">{{city1}}</div>
+      <!-- <div class="card_title card_title1">{{city1}}</div> -->
+      <canvas class="background" id="container1" style="width:98vw;background-color:#4db6ac"></canvas>
+    </div>
+    <div class="card">
+      <div class="background_text">{{city2}}</div>
+      <!-- <div class="card_title card_title2">{{city2}}</div> -->
+      <canvas class="background" id="container2" style="width:98vw;background-color:#009688"></canvas>
+    </div>
+    <div class="card">
+      <div class="background_text">{{city3}}</div>
+      <!-- <div class="card_title card_title3">{{city3}}</div> -->
+      <canvas class="background" id="container3" style="width:98vw;background-color:#00796b"></canvas>
+    </div>
   </div>
 </template>
 <script>
@@ -37,8 +46,8 @@ export default {
   },
   methods:{
     getLastCity() {
-      // this.$axios.get('http://47.114.46.42:3001/getthreecity',{
-      this.$axios.get('/apiLogin/getthreecity',{
+      this.$axios.get('http://47.114.46.42:3001/getthreecity',{
+      // this.$axios.get('/apiLogin/getthreecity',{
       }).then((response) => {
         response = response.data;
         this.city1 = response[0].city;
@@ -56,8 +65,8 @@ export default {
       var url = 'https://geoapi.qweather.com/v2/city/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.city1;
       this.$axios({
         methods:'get',
-        // url: url,
-        url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.city1,
+        url: url,
+        // url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.city1,
       }).then((response) => {
         response = response.data;
         console.log('第一个城市代码获取',response,response.location[0].id)
@@ -65,8 +74,8 @@ export default {
         var url = 'https://api.qweather.com/v7/weather/7d?key=5c232441fa06411eaa744c3ae1cb9ad0&location='+response.location[0].id;
         this.$axios({
           methods:'get',
-          // url: url,
-          url: '/apicWeather/7d?key=5c232441fa06411eaa744c3ae1cb9ad0&location='+response.location[0].id,
+          url: url,
+          // url: '/apicWeather/7d?key=5c232441fa06411eaa744c3ae1cb9ad0&location='+response.location[0].id,
         }).then((response) => {
           response = response.data;
           for(var i = 0;i<global_.g_visibleDay;i++){
@@ -95,8 +104,8 @@ export default {
       var url = 'https://geoapi.qweather.com/v2/city/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.city2;
       this.$axios({
         methods:'get',
-        // url: url,
-        url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.city2,
+        url: url,
+        // url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.city2,
       }).then((response) => {
         response = response.data;
         console.log('第一个城市代码获取',response,response.location[0].id)
@@ -104,8 +113,8 @@ export default {
         var url = 'https://api.qweather.com/v7/weather/7d?key=5c232441fa06411eaa744c3ae1cb9ad0&location='+response.location[0].id;
         this.$axios({
           methods:'get',
-          // url: url,
-          url: '/apicWeather/7d?key=5c232441fa06411eaa744c3ae1cb9ad0&location='+response.location[0].id,
+          url: url,
+          // url: '/apicWeather/7d?key=5c232441fa06411eaa744c3ae1cb9ad0&location='+response.location[0].id,
         }).then((response) => {
           response = response.data;
           // this.weather2 = response.daily;
@@ -133,8 +142,8 @@ export default {
       var url = 'https://geoapi.qweather.com/v2/city/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.city3;
       this.$axios({
         methods:'get',
-        // url: url,
-        url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.city3,
+        url: url,
+        // url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+this.city3,
       }).then((response) => {
         response = response.data;
         console.log('第一个城市代码获取',response,response.location[0].id)
@@ -142,8 +151,8 @@ export default {
         var url = 'https://api.qweather.com/v7/weather/7d?key=5c232441fa06411eaa744c3ae1cb9ad0&location='+response.location[0].id;
         this.$axios({
           methods:'get',
-          // url: url,
-          url: '/apicWeather/7d?key=5c232441fa06411eaa744c3ae1cb9ad0&location='+response.location[0].id,
+          url: url,
+          // url: '/apicWeather/7d?key=5c232441fa06411eaa744c3ae1cb9ad0&location='+response.location[0].id,
         }).then((response) => {
           response = response.data;
           // this.weather3 = response.daily;
@@ -167,8 +176,6 @@ export default {
         console.log(error)
       });
     },
-    //=====================数据处理
-
 
     //=====================图表绘制
     initChart() {
@@ -395,7 +402,7 @@ export default {
   text-align: left;
   padding-left: 5vw;
   color:#003d33;
-  margin-bottom: 1vh;
+  // margin-bottom: 1vh;
   box-shadow: 0px 3px 5px #00000036;
 }
 .card_title {
@@ -417,6 +424,19 @@ export default {
   background-color: #00796b;
 }
 .background{
-  border-radius: 0px 15px 15px 15px;
+  border-radius: 15px 15px 15px 15px;
 }
+.card {
+  margin: 3vh 1vw;
+  .background_text{
+    position: absolute;
+    width: 100vw;
+    // left: 0;
+    margin: 0 auto;
+    font-size: 120px;
+    color: white;
+    opacity: 0.1;
+  }
+}
+
 </style>

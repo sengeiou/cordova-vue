@@ -7,7 +7,7 @@
  * @LastEditTime: 2020-12-08 19:49:48
 -->
 <template>
-  <div>
+  <div id="app">
     <!-- 用户信息头 -->
     <mu-card>
       <!-- <div style="background-color:#e0f2f1"> -->
@@ -45,9 +45,9 @@
     <!-- 历史 -->
     <mu-expansion-panel :zDepth=0 :expand="panel === 'panel3'" @change="toggle('panel3')">
       <div slot="header">历史设置</div>
-        <p style="color:#004d40;font-size:15px">当前可见天数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{visibleDay}}</p>
-        <div style="display:flex;justify-content:space-between" >
-          <p style="height:40px;line-height:40px;font-size:15px">修改可见天数：</p>
+        <p style="color:#004d40;font-size:15px">当前可见天数：{{visibleDay}}</p>
+        <div style="display:flex;" >
+          <span style="height:40px;line-height:40px;font-size:15px">修改可见天数：</span>
           <mu-text-field style="width:200px" underline-color='#009688' v-model="visible_day"></mu-text-field>
         </div>
       <mu-button slot="action" flat color="#004d40" @click="changeHistory">保 存</mu-button>
@@ -60,6 +60,7 @@
         <mu-switch v-model="events" readonly></mu-switch>
       </mu-list-item-action>
     </mu-expansion-panel>
+    <mu-divider></mu-divider>
 
     <!-- 忘记密码 -->
     <mu-dialog title="修改密码" width="600" max-width="80%" :esc-press-close="false" :overlay-close="false" :open.sync="openAlert">
@@ -149,7 +150,6 @@ export default {
   mounted(){
     this.getUserInfo();
     this.checkAutoButton();
-    this.getHistory();
   },
   methods:{
     toggle (panel) {
@@ -210,8 +210,8 @@ export default {
       //当前时间
       var curTime = date.getFullYear() + "-" + month + "-" + day
               + " " + hour + ":" + minute + ":" + second;
-      // this.$axios.get('http://47.114.46.42:3001/insertcity',{
-      this.$axios.get('/apiLogin/insertcity',{
+      this.$axios.get('http://47.114.46.42:3001/insertcity',{
+      // this.$axios.get('/apiLogin/insertcity',{
         params: {
           city: global_.g_addressCity,
           time: curTime,
@@ -226,8 +226,8 @@ export default {
     getUserInfo() {
       this.$axios({
         method:'get',
-        // url:'http://47.114.46.42:3001/login',
-        url: '/apiLogin/login',
+        url:'http://47.114.46.42:3001/login',
+        // url: '/apiLogin/login',
       }).then((response) => {
         response = response.data[0];
         // console.log('登录请求返回结果',response)
@@ -245,8 +245,8 @@ export default {
       this.openAlert = false;
     },
     saveNewPassword(){
-      // this.$axios.get('http://47.114.46.42:3001/modifypassword',{
-      this.$axios.get('/apiLogin/modifypassword',{
+      this.$axios.get('http://47.114.46.42:3001/modifypassword',{
+      // this.$axios.get('/apiLogin/modifypassword',{
         params: {
           username: this.username,
           nickname: this.nickname,
@@ -280,9 +280,6 @@ export default {
         window.localStorage.removeItem('username');
         window.localStorage.removeItem('password');
       }
-    },
-    getHistory() {
-
     },
     changeHistory() {
       global_.setVisibleDay(this.visible_day)

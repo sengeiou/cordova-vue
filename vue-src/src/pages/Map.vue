@@ -7,7 +7,7 @@
  * @LastEditTime: 2020-12-08 18:18:36
 -->
 <template>
-  <div>
+  <div id="app">
     <div id="container"></div>
     <div class="info">
       <p id='info'></p>
@@ -63,8 +63,10 @@ export default {
             if (result && result.city && result.bounds) {
               var cityinfo = result.city;
               var citybounds = result.bounds;
+              var cityName = cityinfo.slice(0,2)
               //将城市信息写入全局变量
-              global_.setAddressCity(cityinfo);
+              global_.setAddressCity(cityName);
+                            console.log(11111111111111111111,global_.g_addressCity)
               //地图显示当前城市
               map.setBounds(citybounds);
               //执行实时天气信息查询
