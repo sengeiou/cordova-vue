@@ -26,6 +26,13 @@ module.exports = {
             '^/apiCity': '/',              //重写,
         }
       },
+      '/apicWeather': {
+        target: 'https://api.qweather.com/v7/weather', //后端接口地址
+        changeOrigin: true,               //是否允许跨越
+        pathRewrite: {
+            '^/apicWeather': '/',              //重写,
+        }
+      },
       '/apiWeather': {
         target: 'https://devapi.qweather.com/v7/weather', //后端接口地址
         changeOrigin: true,               //是否允许跨越
@@ -38,6 +45,13 @@ module.exports = {
         changeOrigin: true,               //是否允许跨越
         pathRewrite: {
             '^/apiPicture': '/',              //重写,
+        }
+      },
+      '/apiBg': {
+        target: 'https://source.unsplash.com', //后端接口地址
+        changeOrigin: true,               //是否允许跨越
+        pathRewrite: {
+            '^/apiBg': '/',              //重写,
         }
       },
       '/apiLogin': {

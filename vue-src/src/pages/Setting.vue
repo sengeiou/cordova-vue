@@ -45,7 +45,12 @@
     <!-- 历史 -->
     <mu-expansion-panel :zDepth=0 :expand="panel === 'panel3'" @change="toggle('panel3')">
       <div slot="header">历史设置</div>
-        当前历史可见天数：
+        <p style="color:#004d40;font-size:15px">当前可见天数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{visibleDay}}</p>
+        <div style="display:flex;justify-content:space-between" >
+          <p style="height:40px;line-height:40px;font-size:15px">修改可见天数：</p>
+          <mu-text-field style="width:200px" underline-color='#009688' v-model="visible_day"></mu-text-field>
+        </div>
+      <mu-button slot="action" flat color="#004d40" @click="changeHistory">保 存</mu-button>
     </mu-expansion-panel>
     <!-- 自动登录 -->
     <mu-expansion-panel class="loginsetting" :zDepth=0 :expand="panel === 'panel4'" @change="toggle('panel4')">
@@ -135,31 +140,20 @@ export default {
       password:'',
       openAlert: false,
       fo_password:'',
+      //历史设置
+      visibleDay:global_.g_visibleDay,
+      visible_day:'',
+
     }
   },
   mounted(){
-    this.getServer();
     this.getUserInfo();
     this.checkAutoButton();
+    this.getHistory();
   },
   methods:{
     toggle (panel) {
       this.panel = panel === this.panel ? '' : panel;
-    },
-    getServer() {   
-      this.$axios({
-        method:'get',
-        url:'https://restapi.amap.com/v3/geocode/geo?output=JSON&key=af31dcfd8e52be6c756ef9f8d5e4a566&address=天津省天津市&city=天津市',
-        // data: {
-        //   username: 'ch',
-        //   password: 'HappyNewYear'
-        // }
-      }).then((response) => {
-        // response = response.data;
-        console.log(response)
-      }).catch((error) => {
-        console.log(error)
-      });
     },
     addressChange (value, index) {
       switch (index) {
@@ -199,12 +193,41 @@ export default {
       }).catch((error) => {
         console.log(error)
       });
+      //格式化时间-存到数据库
+      function zeroFill(i){
+        if (i >= 0 && i <= 9) {
+          return "0" + i;
+        } else {
+          return i;
+        }
+      }
+      var date = new Date();//当前时间
+      var month = zeroFill(date.getMonth() + 1);//月
+      var day = zeroFill(date.getDate());//日
+      var hour = zeroFill(date.getHours());//时
+      var minute = zeroFill(date.getMinutes());//分
+      var second = zeroFill(date.getSeconds());//秒
+      //当前时间
+      var curTime = date.getFullYear() + "-" + month + "-" + day
+              + " " + hour + ":" + minute + ":" + second;
+      // this.$axios.get('http://47.114.46.42:3001/insertcity',{
+      this.$axios.get('/apiLogin/insertcity',{
+        params: {
+          city: global_.g_addressCity,
+          time: curTime,
+        },
+      }).then((response) => {
+        response = response.data;
+        console.log('插入城市后返回三个结果',response)
+      }).catch((error) => {
+        console.log(error)
+      });
     },
     getUserInfo() {
       this.$axios({
         method:'get',
-        url:'http://47.114.46.42:3001/login',
-        // url: '/apiLogin/login',
+        // url:'http://47.114.46.42:3001/login',
+        url: '/apiLogin/login',
       }).then((response) => {
         response = response.data[0];
         // console.log('登录请求返回结果',response)
@@ -222,8 +245,8 @@ export default {
       this.openAlert = false;
     },
     saveNewPassword(){
-      this.$axios.get('http://47.114.46.42:3001/modifypassword',{
-      // this.$axios.get('/apiLogin/modifypassword',{
+      // this.$axios.get('http://47.114.46.42:3001/modifypassword',{
+      this.$axios.get('/apiLogin/modifypassword',{
         params: {
           username: this.username,
           nickname: this.nickname,
@@ -257,6 +280,13 @@ export default {
         window.localStorage.removeItem('username');
         window.localStorage.removeItem('password');
       }
+    },
+    getHistory() {
+
+    },
+    changeHistory() {
+      global_.setVisibleDay(this.visible_day)
+      this.visibleDay = global_.g_visibleDay;
     }
   }
     

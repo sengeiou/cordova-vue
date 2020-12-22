@@ -16,6 +16,7 @@
     </mu-tabs>
 
     <div class="demo-text" v-if="active === 0">
+      <!-- <img id="bg" :src="bg_src"> -->
       <!-- https://source.unsplash.com/800x0/?encryption,girl -->
       <div class="now_weather">
         <div class="now_weather_header">
@@ -42,6 +43,34 @@
             <div class="now_other_pres_span">气压</div>
           </div>
         </div>
+      </div>
+      <div class="hot_city">
+        <p>其他热门城市</p>
+        <mu-divider style="width: 80vw;margin: 0 auto"></mu-divider>
+        <mu-list>
+          <mu-list-item :ripple="false">
+            <div class="hot_city_title">
+              <img :src="now1.icon" class="hot_city_icon">
+              <mu-list-item-title>北京</mu-list-item-title>
+            </div>
+            <div class="hot_city_temp">{{now1.temp}}℃</div>
+          </mu-list-item>
+          <mu-list-item :ripple="false">
+            <div class="hot_city_title">
+              <img :src="now2.icon" class="hot_city_icon">
+              <mu-list-item-title>上海</mu-list-item-title>
+            </div>
+            <div class="hot_city_temp">{{now2.temp}}℃</div>
+          </mu-list-item>
+          <mu-list-item :ripple="false">
+            <div class="hot_city_title">
+              <img :src="now3.icon" class="hot_city_icon">
+              <mu-list-item-title>广州</mu-list-item-title>
+            </div>
+            <div class="hot_city_temp">{{now3.temp}}℃</div>
+          </mu-list-item>
+        </mu-list>
+        
       </div>
     </div>
     <div class="demo-text" v-if="active === 1">
@@ -90,6 +119,8 @@ export default {
       active: 0,
       //二维码
       link: 'http://www.hznu.edu.cn',
+      //背景图
+      bg_src:'',
       //每日一图
       pic_url1:'',
       pic_cpr1:'',
@@ -117,8 +148,23 @@ export default {
     this.getCityCode();
     this.getPicture();
     this.getHotCity();
+    this.getBg();
   },
   methods:{
+    getBg(){
+      // https://source.unsplash.com/800x1200/?
+      this.$axios({
+        method: 'get',
+        // url:'https://source.unsplash.com/800x1200/?'+global_.g_addressCity,
+        url:'/apiBg/800x1200/?杭州',
+      }).then((response) => {
+        // response = response.data;
+        this.bg_src = "data:image/jpeg;base64,"+response.data;
+        // console.log('bg',response)
+      }).catch((error) => {
+        console.log(error)
+      });
+    },
     getPicture() {
       this.$axios({
         method: 'post',
@@ -144,8 +190,8 @@ export default {
       var url = 'https://geoapi.qweather.com/v2/city/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+global_.g_addressCity;
       this.$axios({
         methods:'get',
-        url: url,
-        // url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+global_.g_addressCity,
+        // url: url,
+        url: '/apiCity/lookup?key=66be2e4e10c346ba8989c490e6557e3e&location='+global_.g_addressCity,
       }).then((response) => {
         response = response.data;
         this.cityCode = response.location[0].id;
@@ -159,8 +205,8 @@ export default {
       var url = 'https://devapi.qweather.com/v7/weather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+cityCode;
       this.$axios({
         methods:'get',
-        url: url,
-        // url: '/apiWeather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+cityCode,
+        // url: url,
+        url: '/apiWeather/now?key=66be2e4e10c346ba8989c490e6557e3e&location='+cityCode,
       }).then((response) => {
         response = response.data.now;
         this.now = response;
@@ -190,6 +236,7 @@ export default {
           response = response.data.now;
           this.now1 = response;
           this.now1.city='北京';
+          this.now1.icon = '../../static/bw-256/'+this.now1.icon+'.png'
           console.log('getWeather北京',this.now1)
         }).catch((error) => {
           console.log(error)
@@ -216,6 +263,7 @@ export default {
           response = response.data.now;
           this.now2 = response;
           this.now2.city='上海';
+          this.now2.icon = '../../static/bw-256/'+this.now2.icon+'.png'
           console.log('getWeather上海',this.now2)
         }).catch((error) => {
           console.log(error)
@@ -242,6 +290,7 @@ export default {
           response = response.data.now;
           this.now3 = response;
           this.now3.city='广州';
+          this.now3.icon = '../../static/bw-256/'+this.now3.icon+'.png'
           console.log('getWeather广州',this.now3)
         }).catch((error) => {
           console.log(error)
@@ -327,7 +376,27 @@ export default {
         font-size: 12px;
       }
     }
-    
+  }
+}
+.hot_city {
+  margin-top:5vh;
+  .hot_city_title {
+    display: flex;
+    .hot_city_icon {
+        width: 43px;
+      }
+      .mu-item-title{
+        font-size: 18px;
+        padding-left: 2vw;
+        height: 43px;
+        line-height: 43px
+      }
+  }
+  .hot_city_temp{
+    position: absolute;
+    right: 10vw;
+    // margin-left: 50vw;
+    font-size: 18px;
   }
 }
 </style>
