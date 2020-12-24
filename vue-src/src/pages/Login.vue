@@ -102,8 +102,8 @@ export default {
           console.log('form valid: ', result)
           this.$axios({
             method:'get',
-            // url: '/apiLogin/login',
-            url:'http://47.114.46.42:3001/login',
+            url: '/apiLogin/login',
+            // url:'http://47.114.46.42:3001/login',
           }).then((response) => {
             response = response.data[0];
             // console.log('登录请求返回结果',response)
@@ -138,8 +138,8 @@ export default {
       this.openAlert = false;
     },
     saveNewPassword(){
-      this.$axios.get('http://47.114.46.42:3001/modifypassword',{
-      // this.$axios.get('/apiLogin/modifypassword',{
+      // this.$axios.get('http://47.114.46.42:3001/modifypassword',{
+      this.$axios.get('/apiLogin/modifypassword',{
         params: {
           username: this.fo_username,
           nickname: this.fo_nickname,
@@ -157,8 +157,8 @@ export default {
     autoLogin() {
       this.$axios({
         method:'get',
-        // url: '/apiLogin/login',
-        url:'http://47.114.46.42:3001/login',
+        url: '/apiLogin/login',
+        // url:'http://47.114.46.42:3001/login',
       }).then((response) => {
         response = response.data[0];
         // console.log('登录请求返回结果',response)

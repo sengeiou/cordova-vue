@@ -46,8 +46,8 @@ export default {
   },
   methods:{
     getLastCity() {
-      this.$axios.get('http://47.114.46.42:3001/getthreecity',{
-      // this.$axios.get('/apiLogin/getthreecity',{
+      // this.$axios.get('http://47.114.46.42:3001/getthreecity',{
+      this.$axios.get('/apiLogin/getthreecity',{
       }).then((response) => {
         response = response.data;
         this.city1 = response[0].city;

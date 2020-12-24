@@ -49,21 +49,21 @@
         <mu-list>
           <mu-list-item :ripple="false">
             <div class="hot_city_title">
-              <!-- <img :src="now1.icon" class="hot_city_icon"> -->
+              <img :src="now1.icon" class="hot_city_icon">
               <mu-list-item-title>北京</mu-list-item-title>
             </div>
             <div class="hot_city_temp">{{now1.temp}}℃</div>
           </mu-list-item>
           <mu-list-item :ripple="false">
             <div class="hot_city_title">
-              <!-- <img :src="now2.icon" class="hot_city_icon"> -->
+              <img :src="now2.icon" class="hot_city_icon">
               <mu-list-item-title>上海</mu-list-item-title>
             </div>
             <div class="hot_city_temp">{{now2.temp}}℃</div>
           </mu-list-item>
           <mu-list-item :ripple="false">
             <div class="hot_city_title">
-              <!-- <img :src="now3.icon" class="hot_city_icon"> -->
+              <img :src="now3.icon" class="hot_city_icon">
               <mu-list-item-title>广州</mu-list-item-title>
             </div>
             <div class="hot_city_temp">{{now3.temp}}℃</div>
@@ -224,7 +224,7 @@ export default {
           response = response.data.now;
           this.now1 = response;
           this.now1.city='北京';
-          this.now1.icon = '/www/static/bw-256/'+this.now1.icon+'.png'
+          this.now1.icon = '../../static/bw-256/'+this.now1.icon+'.png'
           console.log('getWeather北京',this.now1)
         }).catch((error) => {
           console.log(error)

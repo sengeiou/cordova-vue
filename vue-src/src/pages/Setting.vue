@@ -210,8 +210,8 @@ export default {
       //当前时间
       var curTime = date.getFullYear() + "-" + month + "-" + day
               + " " + hour + ":" + minute + ":" + second;
-      this.$axios.get('http://47.114.46.42:3001/insertcity',{
-      // this.$axios.get('/apiLogin/insertcity',{
+      // this.$axios.get('http://47.114.46.42:3001/insertcity',{
+      this.$axios.get('/apiLogin/insertcity',{
         params: {
           city: global_.g_addressCity,
           time: curTime,
@@ -226,8 +226,8 @@ export default {
     getUserInfo() {
       this.$axios({
         method:'get',
-        url:'http://47.114.46.42:3001/login',
-        // url: '/apiLogin/login',
+        // url:'http://47.114.46.42:3001/login',
+        url: '/apiLogin/login',
       }).then((response) => {
         response = response.data[0];
         // console.log('登录请求返回结果',response)
@@ -245,8 +245,8 @@ export default {
       this.openAlert = false;
     },
     saveNewPassword(){
-      this.$axios.get('http://47.114.46.42:3001/modifypassword',{
-      // this.$axios.get('/apiLogin/modifypassword',{
+      // this.$axios.get('http://47.114.46.42:3001/modifypassword',{
+      this.$axios.get('/apiLogin/modifypassword',{
         params: {
           username: this.username,
           nickname: this.nickname,
